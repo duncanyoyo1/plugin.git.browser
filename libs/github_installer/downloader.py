@@ -18,10 +18,10 @@
 import time
 import xbmcgui
 import zipfile
-from libs import requests
-from libs import kodi
-from libs.core import format_size
-from libs.github_api import get_version_by_name, get_version_by_xml
+import requests
+from commoncore import kodi
+from commoncore.core import format_size
+from libs.github import get_version_by_name, get_version_by_xml
 
 class downloaderException(Exception):
 	pass
@@ -31,6 +31,10 @@ def format_status(cached, total, speed):
 	total = format_size(total)
 	speed = format_size(speed, 'B/s')
 	return 	"%s of %s at %s" % (cached, total, speed) 
+
+def test_url(url):
+	r = requests.head(url)
+	return r.status_code == requests.codes.ok
 
 def download(url, addon_id, destination, unzip=False, quiet=False):
 	version = None
